@@ -1,0 +1,148 @@
+{
+  "source": "https://data.cityofchicago.org/resource/6dvr-xwnh.csv",
+  "source_id": "6dvr-xwnh",
+  "source_columns": [
+    "trip_id",
+    "trip_start_timestamp",
+    "pickup_community_area",
+    "dropoff_community_area",
+    "trip_seconds",
+    "trip_miles",
+    "fare",
+    "trip_total"
+  ],
+  "start": "2025-11-03",
+  "end": "2025-11-16",
+  "timezone": "America/Chicago",
+  "assembled_at": "2026-11-22T23:23:46+00:00",
+  "source_rows": 3676279,
+  "discarded_rows": 0,
+  "files": [
+    {
+      "day": "2025-11-03",
+      "file": "2025-11-03.parquet",
+      "sha256": "ef1cff48a0a1b664680503ba230ae2a77c02d5ab1fdab03d263c796565afecc0",
+      "source_rows": 218764,
+      "discarded_rows": 0,
+      "accepted_rows": 218764,
+      "unknown_pickup": 24111
+    },
+    {
+      "day": "2025-11-04",
+      "file": "2025-11-04.parquet",
+      "sha256": "77ee3ab8992bbb9f64d0715955402a9e8a24aa82cf181b7a50946d79dd1cf4c3",
+      "source_rows": 224845,
+      "discarded_rows": 0,
+      "accepted_rows": 224845,
+      "unknown_pickup": 22027
+    },
+    {
+      "day": "2025-11-05",
+      "file": "2025-11-05.parquet",
+      "sha256": "6431f0f8b777a7f02df8dabfdfe65f560bfb2a22ffe92d5d815a8c5193e40e01",
+      "source_rows": 240548,
+      "discarded_rows": 0,
+      "accepted_rows": 240548,
+      "unknown_pickup": 23801
+    },
+    {
+      "day": "2025-11-06",
+      "file": "2025-11-06.parquet",
+      "sha256": "c02219dccf4738eb1ef6b3dbebf88a94e84fa237f6eb9d5bca307e15943ef4ea",
+      "source_rows": 263883,
+      "discarded_rows": 0,
+      "accepted_rows": 263883,
+      "unknown_pickup": 26232
+    },
+    {
+      "day": "2025-11-07",
+      "file": "2025-11-07.parquet",
+      "sha256": "2389e704fe6f60619eb088a46a98ea999e233a96247ab9a421d69d7d8bb9ef96",
+      "source_rows": 307689,
+      "discarded_rows": 0,
+      "accepted_rows": 307689,
+      "unknown_pickup": 28210
+    },
+    {
+      "day": "2025-11-08",
+      "file": "2025-11-08.parquet",
+      "sha256": "98cdf33a43eaa4268f87a84675c79f9696bdca5549e6d4cd82efa203a44e06d3",
+      "source_rows": 343144,
+      "discarded_rows": 0,
+      "accepted_rows": 343144,
+      "unknown_pickup": 25454
+    },
+    {
+      "day": "2025-11-09",
+      "file": "2025-11-09.parquet",
+      "sha256": "88096d0499782f7475bbaa6dd06b2303cad396a83e805f065cf37a734fb1d24c",
+      "source_rows": 256609,
+      "discarded_rows": 0,
+      "accepted_rows": 256609,
+      "unknown_pickup": 21679
+    },
+    {
+      "day": "2025-11-10",
+      "file": "2025-11-10.parquet",
+      "sha256": "9cc3b10d4ae9b193ad86b31f9ef66ab57268ace876c8affeefbfec1fa2775b2f",
+      "source_rows": 216495,
+      "discarded_rows": 0,
+      "accepted_rows": 216495,
+      "unknown_pickup": 23065
+    },
+    {
+      "day": "2025-11-11",
+      "file": "2025-11-11.parquet",
+      "sha256": "036db3b2f684ecc09b270364311e4654a238b3e4a3788ffdc39d83b28eab1387",
+      "source_rows": 220784,
+      "discarded_rows": 0,
+      "accepted_rows": 220784,
+      "unknown_pickup": 22599
+    },
+    {
+      "day": "2025-11-12",
+      "file": "2025-11-12.parquet",
+      "sha256": "ffeb5394450fcc819d46e22c06c7124e2fe09b92a7a4840dfd5afbeb9999502a",
+      "source_rows": 233096,
+      "discarded_rows": 0,
+      "accepted_rows": 233096,
+      "unknown_pickup": 23367
+    },
+    {
+      "day": "2025-11-13",
+      "file": "2025-11-13.parquet",
+      "sha256": "d47c0f67482b6a0037ab5cac66630bd13ee4ec4a74dee77aaa4ef288e06e9ed9",
+      "source_rows": 256730,
+      "discarded_rows": 0,
+      "accepted_rows": 256730,
+      "unknown_pickup": 25668
+    },
+    {
+      "day": "2025-11-14",
+      "file": "2025-11-14.parquet",
+      "sha256": "4ab35ad91157ce6547a45974fa2606b817c4f92658182486ee104c540f44095f",
+      "source_rows": 304483,
+      "discarded_rows": 0,
+      "accepted_rows": 304483,
+      "unknown_pickup": 28199
+    },
+    {
+      "day": "2025-11-15",
+      "file": "2025-11-15.parquet",
+      "sha256": "99eae773decb62a988ba67ad098ee9986e222ecdcff1eb8cd48b98a51a9a38ed",
+      "source_rows": 334828,
+      "discarded_rows": 0,
+      "accepted_rows": 334828,
+      "unknown_pickup": 26389
+    },
+    {
+      "day": "2025-11-16",
+      "file": "2025-11-16.parquet",
+      "sha256": "f59bae3b1a1f7758792bbbbfeafe23c72896ab599f979d8758611761735db09f",
+      "source_rows": 254381,
+      "discarded_rows": 0,
+      "accepted_rows": 254381,
+      "unknown_pickup": 22190
+    }
+  ]
+}

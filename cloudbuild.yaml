@@ -1,0 +1,31 @@
+timeout: 1200s
+options:
+  logging: CLOUD_LOGGING_ONLY
+substitutions:
+  _REGION: us-central1
+  _SERVICE: pulso-chicago
+  _REPOSITORY: cloud-run-source-deploy
+steps:
+  - name: python:3.13-slim-bookworm
+    entrypoint: sh
+    args: ['-ec', 'pip install --quiet -r requirements-dev.txt && python -m pytest -q tests/test_normalize.py']
+  - name: gcr.io/cloud-builders/docker
+    args: ['build', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE}:$BUILD_ID', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE}:$BUILD_ID']
+  - name: gcr.io/google.com/cloudsdktool/google-cloud-cli:stable
+    entrypoint: bash
+    args:
+      - -ec
+      - |
+        image="${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_SERVICE}:$BUILD_ID"
+        digest="$$(gcloud artifacts docker images describe "$$image" --format='value(image_summary.digest)')"
+        test -n "$$digest"
+        gcloud run deploy "${_SERVICE}" --image="$${image%:*}@$$digest" --project="$PROJECT_ID" --region="${_REGION}" \
+          --revision-suffix="b-$BUILD_ID" --tag="b-$BUILD_ID" --no-traffic --quiet
+        url="$$(gcloud run services describe "${_SERVICE}" --project="$PROJECT_ID" --region="${_REGION}" --format=json | \
+          python3 -c 'import json,sys; print(next(item["url"] for item in json.load(sys.stdin)["status"]["traffic"] if item.get("tag") == "b-$BUILD_ID"))')"
+        python3 infra/smoke.py "$$url"
+        gcloud run services update-traffic "${_SERVICE}" --project="$PROJECT_ID" --region="${_REGION}" \
+          --to-revisions="${_SERVICE}-b-$BUILD_ID=100" --quiet
+        gcloud run services update-traffic "${_SERVICE}" --project="$PROJECT_ID" --region="${_REGION}" --remove-tags="b-$BUILD_ID" --quiet

@@ -1,0 +1,59 @@
+{
+  "lot": "pulso_202511_demo",
+  "rows": 3676279,
+  "version": "25.8.33.6",
+  "start": "2025-11-03",
+  "end": "2025-11-16",
+  "zone": 8,
+  "iterations": 30,
+  "metrics": [
+    {
+      "query": "mapa",
+      "variant": "detalle",
+      "p50_ms": 8.0,
+      "p95_ms": 19,
+      "read_rows": 3676279.0,
+      "read_bytes": 11028837.0
+    },
+    {
+      "query": "mapa",
+      "variant": "agregado",
+      "p50_ms": 4.0,
+      "p95_ms": 4,
+      "read_rows": 26141.0,
+      "read_bytes": 287551.0
+    },
+    {
+      "query": "horas",
+      "variant": "detalle",
+      "p50_ms": 7.0,
+      "p95_ms": 9,
+      "read_rows": 1433600.0,
+      "read_bytes": 4519130.0
+    },
+    {
+      "query": "horas",
+      "variant": "agregado",
+      "p50_ms": 4.0,
+      "p95_ms": 5,
+      "read_rows": 26141.0,
+      "read_bytes": 313692.0
+    },
+    {
+      "query": "destinos",
+      "variant": "detalle",
+      "p50_ms": 7.0,
+      "p95_ms": 12,
+      "read_rows": 1433600.0,
+      "read_bytes": 4519130.0
+    },
+    {
+      "query": "destinos",
+      "variant": "agregado",
+      "p50_ms": 4.0,
+      "p95_ms": 6,
+      "read_rows": 65521.0,
+      "read_bytes": 786252.0
+    }
+  ]
+}
