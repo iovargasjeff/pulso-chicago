@@ -39,7 +39,7 @@ El [informe del corte validado](benchmark/results/resumen.md) y sus [mediciones 
 
 ## Despliegue público en Dokploy
 
-[Explorar Pulso Chicago](https://pulso-chicago-6c7ff4-13-140-40-36.sslip.io/). El despliegue utiliza Docker Compose en un VPS de Contabo.
+[Explorar Pulso Chicago](https://pulso-chicago.iovargasjeff.dev/). El despliegue utiliza Docker Compose en un VPS de Contabo.
 
 `compose.dokploy.yaml` mantiene ClickHouse y la carga inicial en una red interna. La carga crea el esquema desde la fuente pública y prepara el usuario SQL de solo lectura. El dashboard empieza a servir después de conciliar el lote. Los volúmenes conservan ClickHouse y los archivos Parquet entre despliegues. En Dokploy se configuran los secretos `PULSO_LOADER_PASSWORD` y `PULSO_READER_PASSWORD` con claves hexadecimales independientes.
 

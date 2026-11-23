@@ -50,6 +50,18 @@ services:
       PULSO_DATABASE: pulso_202511_demo
     expose:
       - "8080"
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: dokploy-network
+      traefik.http.routers.pulso-chicago-dev-http.rule: "Host(`pulso-chicago.iovargasjeff.dev`)"
+      traefik.http.routers.pulso-chicago-dev-http.entrypoints: web
+      traefik.http.routers.pulso-chicago-dev-http.middlewares: redirect-to-https@file
+      traefik.http.routers.pulso-chicago-dev-http.service: pulso-chicago-dev
+      traefik.http.routers.pulso-chicago-dev-https.rule: "Host(`pulso-chicago.iovargasjeff.dev`)"
+      traefik.http.routers.pulso-chicago-dev-https.entrypoints: websecure
+      traefik.http.routers.pulso-chicago-dev-https.tls.certresolver: letsencrypt
+      traefik.http.routers.pulso-chicago-dev-https.service: pulso-chicago-dev
+      traefik.http.services.pulso-chicago-dev.loadbalancer.server.port: "8080"
     networks: [data, dokploy-network]
 
 volumes:
