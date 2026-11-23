@@ -1,0 +1,62 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.8
+    restart: unless-stopped
+    environment:
+      CLICKHOUSE_USER: pulso_loader
+      CLICKHOUSE_PASSWORD: ${PULSO_LOADER_PASSWORD:?Falta PULSO_LOADER_PASSWORD}
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    volumes:
+      - clickhouse:/var/lib/clickhouse
+    healthcheck:
+      test: ["CMD", "bash", "-ec", "clickhouse-client --user \"$$CLICKHOUSE_USER\" --password \"$$CLICKHOUSE_PASSWORD\" --query 'SELECT 1'"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+    networks: [data]
+
+  seed:
+    build:
+      context: .
+      target: loader
+    restart: "on-failure:3"
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+    environment:
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_SECURE: "false"
+      CLICKHOUSE_LOADER_USER: pulso_loader
+      CLICKHOUSE_LOADER_PASSWORD: ${PULSO_LOADER_PASSWORD:?Falta PULSO_LOADER_PASSWORD}
+      CLICKHOUSE_PASSWORD: ${PULSO_READER_PASSWORD:?Falta PULSO_READER_PASSWORD}
+      PULSO_DATABASE: pulso_202511_demo
+    volumes:
+      - snapshots:/snapshots
+    networks: [data]
+
+  dashboard:
+    build:
+      context: .
+      target: runtime
+    restart: unless-stopped
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    environment:
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_SECURE: "false"
+      CLICKHOUSE_USER: pulso_reader
+      CLICKHOUSE_PASSWORD: ${PULSO_READER_PASSWORD:?Falta PULSO_READER_PASSWORD}
+      PULSO_DATABASE: pulso_202511_demo
+    expose:
+      - "8080"
+    networks: [data, dokploy-network]
+
+volumes:
+  clickhouse:
+  snapshots:
+
+networks:
+  data: {}
+  dokploy-network:
+    external: true
