@@ -24,3 +24,22 @@ jobs:
         working-directory: frontend
       - run: docker compose up -d --wait
       - run: RUN_CLICKHOUSE_TESTS=1 python -m pytest -q
+
+  deploy:
+    name: Publicar en Dokploy
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pulso-chicago-production
+    steps:
+      - name: Solicitar despliegue de main
+        env:
+          DOKPLOY_WEBHOOK: ${{ secrets.PULSO_DOKPLOY_WEBHOOK }}
+        run: |
+          test -n "$DOKPLOY_WEBHOOK"
+          status="$(curl --silent --show-error --max-time 45 --output /dev/null --write-out '%{http_code}' \
+            --header 'Content-Type: application/json' --header 'X-GitHub-Event: push' \
+            --data-binary "@$GITHUB_EVENT_PATH" "$DOKPLOY_WEBHOOK")"
+          test "$status" = 200
+          echo "Dokploy aceptó el despliegue de $GITHUB_SHA."

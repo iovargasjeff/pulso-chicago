@@ -37,7 +37,15 @@ El hecho usa una fila por `trip_id`. Las vistas materializadas mantienen agregad
 
 El [informe del corte validado](benchmark/results/resumen.md) y sus [mediciones individuales](benchmark/results/mediciones.csv) documentan 3.676.279 viajes y 180 consultas medidas en ClickHouse local. La herramienta comprueba igualdad de resultados antes de informar p50, p95, filas y bytes por consulta. Consulta `data/benchmark/mediciones.csv` y `data/benchmark/resumen.md`. Usa un usuario con lectura de `system.query_log` y añade `--cluster-logs` si las consultas se reparten por las réplicas de ClickHouse Cloud.
 
-## Despliegue por CLI
+## Despliegue público en Dokploy
+
+[Explorar Pulso Chicago](https://pulso-chicago-6c7ff4-13-140-40-36.sslip.io/). El despliegue utiliza Docker Compose en un VPS de Contabo.
+
+`compose.dokploy.yaml` mantiene ClickHouse y la carga inicial en una red interna. La carga crea el esquema desde la fuente pública y prepara el usuario SQL de solo lectura. El dashboard empieza a servir después de conciliar el lote. Los volúmenes conservan ClickHouse y los archivos Parquet entre despliegues. En Dokploy se configuran los secretos `PULSO_LOADER_PASSWORD` y `PULSO_READER_PASSWORD` con claves hexadecimales independientes.
+
+GitHub Actions valida el código y las consultas. Al pasar la validación en `main`, solicita un despliegue mediante el webhook de Dokploy, guardado como secreto `PULSO_DOKPLOY_WEBHOOK`. Solo el servicio `dashboard` recibe el tráfico HTTPS de Traefik.
+
+## Ruta alternativa por CLI en Google Cloud
 
 1. Usa un proyecto dedicado de Google Cloud con facturación y habilita Cloud Run, Cloud Build, Artifact Registry y Secret Manager. Crea ClickHouse Cloud sobre Google Cloud en `us-central1` y verifica que el servicio de Cloud Run podrá llegar al endpoint TLS. Para restringir el origen por IP se necesita configurar salida estática.
 2. Conserva una copia privada de los Parquet y el manifiesto con `gcloud storage cp --recursive data/demo gs://TU_BUCKET/lotes/`. Carga el corte en ClickHouse Cloud con el mismo comando y las variables `CLICKHOUSE_HOST`, `CLICKHOUSE_LOADER_USER`, `CLICKHOUSE_LOADER_PASSWORD` e `CLICKHOUSE_SECURE=true`. El cargador necesita permisos para crear el esquema, insertar y validar. Crea un usuario de lectura con SELECT sobre `agg_zone_hour`, `agg_od_day` y `dataset_metadata` del esquema publicado. Guarda las credenciales de lectura en los secretos `pulso-clickhouse-user` y `pulso-clickhouse-password`, y concede acceso a esos dos secretos a la identidad de ejecución de Cloud Run.
